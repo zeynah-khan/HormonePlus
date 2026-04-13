@@ -58,7 +58,7 @@ export default function MainTabs() {
         name="Log"
         component={SymptomLog}
         options={{
-            title: 'Log Symptoms',
+            title: 'Log',
             tabBarLabel: 'Log',
         }}
       />

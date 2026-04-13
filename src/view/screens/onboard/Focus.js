@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
-import { colours, typography } from '../view/layouts/Theme';
+import { colours, typography } from '../../layouts/Theme';
 
 export default function Focus({ navigation }) {
   return (
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   button: {
-    backgroundColor: colours.textPrimary,
+    backgroundColor: colours.primary,
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,

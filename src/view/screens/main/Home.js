@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
-import { colours, typography } from '../view/layouts/Theme';
+import { colours, typography } from '../../layouts/Theme';
 
 export default function Home() {
   return (
