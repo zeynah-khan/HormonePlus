@@ -1,36 +1,42 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from './src/view/screens/Home';
-import SymptomLog from './src/view/screens/SymptomLog';
-import Learn from './src/view/screens/Learn';
-import Profile from './src/view/screens/Profile';
+import MainTabs from './src/navigation/MainTabs';
+// onboarding screens
+import Welcome from './src/view/screens/Welcome';
+import Intentions from './src/view/screens/Intentions';
+import Focus from './src/view/screens/Focus';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown: true }}>
-        <Tab.Screen
-          name="Home"
-          component={Home}
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+      >
+        {/* onboarding stack */}
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
         />
-        <Tab.Screen
-          name="Log"
-          component={SymptomLog}
+        <Stack.Screen
+          name="Intentions"
+          component={Intentions}
         />
-        <Tab.Screen
-          name="Learn"
-          component={Learn}
+        <Stack.Screen
+          name="Focus"
+          component={Focus}
         />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
+
+        {/* main app stack */}
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
         />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
