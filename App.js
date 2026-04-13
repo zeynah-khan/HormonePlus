@@ -5,9 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import MainTabs from './src/navigation/MainTabs';
 // onboarding screens
-import Welcome from './src/view/screens/Welcome';
-import Intentions from './src/view/screens/Intentions';
-import Focus from './src/view/screens/Focus';
+import Welcome from './src/view/screens/onboard/Welcome';
+import Intentions from './src/view/screens/onboard/Intentions';
+import Focus from './src/view/screens/onboard/Focus';
 
 const Stack = createNativeStackNavigator();
 

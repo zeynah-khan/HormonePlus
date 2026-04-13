@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import Screen from '../layouts/Screen';
+import Screen from '../../layouts/Screen';
+import { colours, typography } from '../view/layouts/Theme';
 
 export default function SymptomLog() {
   return (
@@ -21,14 +22,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        fontSize: 28,
-        fontWeight: '700',
-        color: '#2E2233',
+        ...typography.titleMedium,
+        color: colours.textPrimary,
         marginBottom: 10,
     },
     subtitle: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: '#5F5666',
+        ...typography.body,
+        color: colours.textMuted,
     },
 });

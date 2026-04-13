@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colours } from './Theme';
 
 export default function Screen({ children }) {
   return (
@@ -15,7 +16,7 @@ export default function Screen({ children }) {
 const styles = StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: '#F4F1F5',
+      backgroundColor: colours.background,
     },
     container: {
       flex: 1,

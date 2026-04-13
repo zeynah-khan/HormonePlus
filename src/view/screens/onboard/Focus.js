@@ -1,24 +1,24 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
-import Screen from '../layouts/Screen';
+import Screen from '../../layouts/Screen';
+import { colours, typography } from '../view/layouts/Theme';
 
-export default function Welcome({ navigation }) {
+export default function Focus({ navigation }) {
   return (
     <Screen>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.title}>Choose a focus</Text>
         <Text style={styles.subtitle}>
-          A hormonal health space designed for reflection, understanding, and
-          support beyond fertility-focused tracking!
+          Help shape your app experience!
         </Text>
         <Text style={styles.body}>
           TBC...
         </Text>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate('Intentions')}
+          onPress={() => navigation.replace('MainTabs')}
         >
-          <Text style={styles.buttonText}>Get started</Text>
+          <Text style={styles.buttonText}>Finish Setup</Text>
         </Pressable>
       </View>
     </Screen>
@@ -31,33 +31,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: '#2E2233',
+    ...typography.titleLarge,
+    color: colours.textPrimary,
     marginBottom: 12,
   },
   subtitle: {
-    fontSize: 18,
-    lineHeight: 28,
-    color: '#4B3D52',
+    ...typography.subtitle,
+    color: colours.textSecondary,
     marginBottom: 16,
   },
   body: {
-    fontSize: 15,
-    lineHeight: 24,
-    color: '#6A6170',
+    ...typography.bodySmall,
+    color: colours.textSoft,
     marginBottom: 28,
   },
   button: {
-    backgroundColor: '#9C6BB3',
+    backgroundColor: colours.textPrimary,
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
     alignSelf: 'flex-start',
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '600',
+    ...typography.button,
+    color: colours.white,
   },
 });

@@ -1,12 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { colours, typography } from '../view/layouts/Theme';
 
 // main tabs
-import Home from '../view/screens/Home';
-import SymptomLog from '../view/screens/SymptomLog';
-import Learn from '../view/screens/Learn';
-import Profile from '../view/screens/Profile';
+import Home from '../view/screens/main/Home';
+import SymptomLog from '../view/screens/main/SymptomLog';
+import Learn from '../view/screens/main/Learn';
+import Profile from '../view/screens/main/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,29 +16,26 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerStyle: {
-          backgroundColor: '#F7F2F8',
+          backgroundColor: colours.headerBackground,
         },
         headerTitleStyle: {
           fontWeight: '600',
           fontSize: 18,
+          color: colours.textPrimary
         },
-        headerTintColor: '#2E2233',
-        tabBarActiveTintColor: '#9C6BB3',
-        tabBarInactiveTintColor: '#8C8691',
+        headerTintColor: colours.textPrimary,
+        tabBarActiveTintColor: colours.primary,
+        tabBarInactiveTintColor: colours.inactive,
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopColor: '#E7E1EA',
+          backgroundColor: colours.surface,
+          borderTopColor: colours.border,
           height: 72,
           paddingTop: 8,
           paddingBottom: 10,
         },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
-        },
-        tabBarIcon: ({ color, size, focused }) => {
+        tabBarLabelStyle: typography.tabLabel,
+        tabBarIcon: ({ color, focused }) => {
           let iconName;
-
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Log') {
@@ -47,7 +45,7 @@ export default function MainTabs() {
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
-          return <Ionicons name={iconName} size={22} color={color} />;
+          return <Ionicons name={iconName} size={22} color={colours} />;
         },
       })}
     >
