@@ -1,24 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
 
 export default function Focus({ navigation }) {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  // user can choose what they're experiencing
+  // this should later affect the app logic
+  const options = [
+    'PCOS',
+    'Menopause',
+    'PMDD',
+    'Perimenopause',
+    'Irregular cycles',
+    'Not sure',
+  ];
+
+  const toggleOption = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
   return (
     <Screen>
       <View style={styles.container}>
         <Text style={styles.title}>Choose a focus</Text>
         <Text style={styles.subtitle}>
-          Help shape your app experience!
+          Select one or more options that match your experience.
         </Text>
-        <Text style={styles.body}>
-          TBC...
-        </Text>
+        <View style={styles.options}>
+          {options.map((item) => {
+            const isSelected = selectedOptions.includes(item);
+            return (
+              <Pressable
+                key={item}
+                style={[
+                  styles.option,
+                  isSelected && styles.selectedOption,
+                ]}
+                onPress={() => toggleOption(item)}
+              >
+                <Text
+                  style={[
+                    styles.optionText,
+                    isSelected && styles.selectedOptionText,
+                  ]}
+                >
+                  {item}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
         <Pressable
           style={styles.button}
           onPress={() => navigation.replace('MainTabs')}
         >
-          <Text style={styles.buttonText}>Finish Setup</Text>
+          <Text style={styles.buttonText}>Finish setup</Text>
         </Pressable>
       </View>
     </Screen>
@@ -31,29 +72,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    ...typography.titleLarge,
+    ...typography.titleMedium,
     color: colours.textPrimary,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   subtitle: {
-    ...typography.subtitle,
-    color: colours.textSecondary,
-    marginBottom: 16,
+    ...typography.body,
+    color: colours.textMuted,
+    marginBottom: 20,
   },
-  body: {
-    ...typography.bodySmall,
-    color: colours.textSoft,
-    marginBottom: 28,
+  options: {
+    marginBottom: 30,
+  },
+  option: {
+    padding: 14,
+    borderRadius: 12,
+    backgroundColor: colours.surface,
+    marginBottom: 10,
+  },
+  selectedOption: {
+    backgroundColor: colours.primary + '33',
+  },
+  optionText: {
+    ...typography.body,
+    color: colours.textPrimary,
+  },
+  selectedOptionText: {
+    color: colours.textPrimary,
+    fontWeight: '600',
   },
   button: {
     backgroundColor: colours.primary,
     paddingVertical: 14,
-    paddingHorizontal: 20,
     borderRadius: 12,
-    alignSelf: 'flex-start',
+    alignItems: 'center',
   },
   buttonText: {
-    ...typography.button,
     color: colours.white,
+    ...typography.button,
   },
 });
