@@ -1,30 +1,34 @@
 import React, { useCallback, useState } from 'react';
 import { Text, StyleSheet, View, Pressable, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
+import { getGoals, getFocusAreas, getSymptomLogs } from '../../../model/storage';
 
 export default function Home({ navigation }) {
   const [latestLog, setLatestLog] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [focusAreas, setFocusAreas] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
-      const loadLatestLog = async () => {
+      const loadData = async () => {
         try {
-          const storedLog = await AsyncStorage.getItem('latestSymptomLog');
-
-          if (storedLog) {
-            setLatestLog(JSON.parse(storedLog));
-          } else {
-            setLatestLog(null);
-          }
+          const storedLogs = await getSymptomLogs();
+          const storedGoals = await getGoals();
+          const storedFocusAreas = await getFocusAreas();
+  
+          setLogs(storedLogs);
+          setLatestLog(storedLogs[0] || null);
+          setGoals(storedGoals);
+          setFocusAreas(storedFocusAreas);
         } catch (error) {
-          console.error('Error loading symptom log:', error);
+          console.error('Error loading app data:', error);
         }
       };
-
-      loadLatestLog();
+  
+      loadData();
     }, [])
   );
 
@@ -37,6 +41,34 @@ export default function Home({ navigation }) {
   };
 
   const formattedSelections = formatSelections();
+
+  const buildInsights = () => {
+    if (!logs.length) return [];
+  
+    const recent = logs.slice(0, 5);
+    const counts = {};
+  
+    recent.forEach((log) => {
+      Object.entries(log.selections).forEach(([category, values]) => {
+        values.forEach((value) => {
+          const key = `${category}:${value}`;
+          counts[key] = (counts[key] || 0) + 1;
+        });
+      });
+    });
+  
+    const topThree = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([key, count]) => {
+        const [category, value] = key.split(':');
+        return `${value} appeared ${count} time${count > 1 ? 's' : ''} in recent ${category} logs`;
+      });
+  
+    return topThree;
+  };
+
+  const recentInsights = buildInsights();
 
   return (
     <Screen>

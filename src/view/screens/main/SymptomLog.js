@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Pressable, ScrollView, Alert } from 'react-nati
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
+import { addSymptomLog } from '../../../model/storage';
 
 export default function SymptomLog({ navigation }) {
   const [selectedItems, setItems] = useState({
@@ -55,15 +56,15 @@ export default function SymptomLog({ navigation }) {
 
   const handleSave = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];
-
+      const now = new Date();
       const symptomLog = {
-        date: today,
+        id: now.toISOString(),
+        date: now.toISOString().split('T')[0],
         selections: selectedItems,
       };
-
-      await AsyncStorage.setItem('latestSymptomLog', JSON.stringify(symptomLog));
-
+  
+      await addSymptomLog(symptomLog);
+  
       Alert.alert('Saved', 'Your symptom log has been saved.');
       navigation.navigate('Home');
     } catch (error) {
@@ -188,5 +189,10 @@ const styles = StyleSheet.create({
     ...typography.button,
     color: colours.white,
     fontSize: 18,
+  },
+  footer: {
+    paddingTop: 12,
+    paddingBottom: 8,
+    backgroundColor: colours.background,
   },
 });

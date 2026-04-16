@@ -45,7 +45,7 @@ export default function MainTabs() {
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
-          return <Ionicons name={iconName} size={22} color={colours} />;
+          return <Ionicons name={iconName} size={22} color={color} />;
         },
       })}
     >

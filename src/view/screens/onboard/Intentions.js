@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
+import { saveGoals } from '../../../model/storage';
 
 export default function Intentions({ navigation }) {
   const [selectedGoals, setSelectedGoals] = useState([]);
@@ -24,6 +25,11 @@ export default function Intentions({ navigation }) {
       setSelectedGoals([...selectedGoals, goal]);
     }
   };
+
+const handleContinue = async () => {
+  await saveGoals(selectedGoals);
+  navigation.navigate('Focus');
+};
   return (
     <Screen>
       <View style={styles.container}>
@@ -60,7 +66,7 @@ export default function Intentions({ navigation }) {
         </View>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate('Focus')}
+          onPress={handleContinue}
         >
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>

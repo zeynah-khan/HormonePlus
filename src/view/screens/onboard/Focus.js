@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
+import { saveFocusAreas } from '../../../model/storage';
 
 export default function Focus({ navigation }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -24,6 +25,12 @@ export default function Focus({ navigation }) {
       setSelectedOptions([...selectedOptions, option]);
     }
   };
+
+  const handleFinishSetup = async () => {
+    await saveFocusAreas(selectedOptions);
+    navigation.replace('MainTabs');
+  };
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -57,7 +64,7 @@ export default function Focus({ navigation }) {
         </View>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.replace('MainTabs')}
+          onPress={handleFinishSetup}
         >
           <Text style={styles.buttonText}>Finish setup</Text>
         </Pressable>
