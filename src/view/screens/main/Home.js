@@ -10,6 +10,7 @@ export default function Home({ navigation }) {
   const [logs, setLogs] = useState([]);
   const [goals, setGoals] = useState([]);
   const [focusAreas, setFocusAreas] = useState([]);
+  const logCount = logs.length;
 
   useFocusEffect(
     useCallback(() => {
@@ -40,8 +41,6 @@ export default function Home({ navigation }) {
       .map(([category, values]) => `${category}: ${values.join(', ')}`);
   };
 
-  const formattedSelections = formatSelections();
-
   const buildInsights = () => {
     if (!logs.length) return [];
   
@@ -68,7 +67,24 @@ export default function Home({ navigation }) {
     return topThree;
   };
 
+  const formattedSelections = formatSelections();
   const recentInsights = buildInsights();
+
+  const getRecommendation = () => {
+    if (focusAreas.includes('PMDD')) {
+      return 'You may find mood and energy tracking especially helpful.';
+    }
+    if (focusAreas.includes('PCOS')) {
+      return 'Tracking patterns over time can help identify changes and recurring symptoms.';
+    }
+    if (focusAreas.includes('Menopause') || focusAreas.includes('Perimenopause')) {
+      return 'Tracking sleep, mood, and energy may help you notice broader hormonal patterns.';
+    }
+    if (focusAreas.includes('Irregular cycles')) {
+      return 'Regular check-ins can help build a clearer picture even when patterns feel unpredictable.';
+    }
+    return 'Start logging regularly to build more meaningful insights over time.';
+  };
 
   return (
     <Screen>
@@ -98,26 +114,38 @@ export default function Home({ navigation }) {
 
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Your insights</Text>
-
-            {!latestLog || formattedSelections.length === 0 ? (
+            {logCount === 0 ? (
               <>
-                <Text style={styles.cardText}>
-                  No symptom entries yet for today.
-                </Text>
+                <Text style={styles.cardText}>No symptom entries yet.</Text>
                 <Text style={styles.softText}>
-                  Once you start logging, your selections will appear here.
+                  Once you start logging, your recent check-ins and patterns will appear here.
                 </Text>
               </>
             ) : (
               <>
-                <Text style={styles.cardText}>
-                  Latest symptom log:
+                <Text style={styles.softText}>
+                  You’ve logged {logCount} {logCount === 1 ? 'entry' : 'entries'} so far.
                 </Text>
+
+                <Text style={styles.cardText}>Latest symptom log:</Text>
                 {formattedSelections.map((entry) => (
                   <Text key={entry} style={styles.softText}>
                     • {entry}
                   </Text>
                 ))}
+
+                {recentInsights.length > 0 && (
+                  <>
+                    <Text style={[styles.cardText, styles.sectionSpacing]}>
+                      Recent patterns:
+                    </Text>
+                    {recentInsights.map((insight) => (
+                      <Text key={insight} style={styles.softText}>
+                        • {insight}
+                      </Text>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </View>
@@ -125,15 +153,25 @@ export default function Home({ navigation }) {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Recommended for you</Text>
             <Text style={styles.cardText}>
-              Based on your goals and focus areas, relevant educational content will
-              appear below!
+              Based on your goals and focus areas, relevant educational content can be prioritised here.
             </Text>
-            <Text style={styles.softText}>
-              Empty for now!
-            </Text>
+
+            <Text style={styles.softText}>{getRecommendation()}</Text>
+
+            {focusAreas.length > 0 && (
+              <Text style={styles.softText}>
+                Your focus: {focusAreas.join(', ')}
+              </Text>
+            )}
+
+            {goals.length > 0 && (
+              <Text style={styles.softText}>
+                Your goals: {goals.join(', ')}
+              </Text>
+            )}
             <Pressable
               style={styles.secondaryButton}
-              onPress={() => navigation.navigate('Learn')}
+              onPress={() => navigation.navigate('Insights')}
             >
               <Text style={styles.secondaryButtonText}>Learn more here</Text>
             </Pressable>

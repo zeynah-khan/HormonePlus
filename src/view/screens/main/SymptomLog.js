@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, Pressable, ScrollView, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
 import { addSymptomLog } from '../../../model/storage';
@@ -62,6 +61,14 @@ export default function SymptomLog({ navigation }) {
         date: now.toISOString().split('T')[0],
         selections: selectedItems,
       };
+      const hasSelections = Object.values(selectedItems).some(
+        (items) => items.length > 0
+      );
+      
+      if (!hasSelections) {
+        Alert.alert('Nothing selected', 'Please choose at least one symptom before saving.');
+        return;
+      }
   
       await addSymptomLog(symptomLog);
   

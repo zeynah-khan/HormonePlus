@@ -6,8 +6,8 @@ import { colours, typography } from '../view/layouts/Theme';
 // main tabs
 import Home from '../view/screens/main/Home';
 import SymptomLog from '../view/screens/main/SymptomLog';
-import Learn from '../view/screens/main/Learn';
 import Profile from '../view/screens/main/Profile';
+import Insights from '../view/screens/main/Insights';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,8 +40,8 @@ export default function MainTabs() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Log') {
             iconName = focused ? 'create' : 'create-outline';
-          } else if (route.name === 'Learn') {
-            iconName = focused ? 'book' : 'book-outline';
+          } else if (route.name === 'Insights') {
+            iconName = focused ? 'analytics' : 'analytics-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -63,9 +63,9 @@ export default function MainTabs() {
         }}
       />
       <Tab.Screen
-        name="Learn"
-        component={Learn}
-        options={{ title: 'Learn' }}
+        name="Insights"
+        component={Insights}
+        options={{ title: 'Insights' }}
       />
       <Tab.Screen
         name="Profile"

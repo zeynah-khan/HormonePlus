@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 import Screen from '../../layouts/Screen';
 import { colours, typography } from '../../layouts/Theme';
-import { saveFocusAreas } from '../../../model/storage';
+import { saveFocusAreas, setSetupComplete } from '../../../model/storage';
 
 export default function Focus({ navigation }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -27,7 +27,14 @@ export default function Focus({ navigation }) {
   };
 
   const handleFinishSetup = async () => {
-    await saveFocusAreas(selectedOptions);
+    await saveFocusAreas(selectedOptions, { skipped: false });
+    await setSetupComplete(true);
+    avigation.replace('MainTabs');
+  };
+
+  const handleSkip = async () => {
+    await saveFocusAreas([], { skipped: true });
+    await setSetupComplete(true);
     navigation.replace('MainTabs');
   };
 
@@ -38,16 +45,14 @@ export default function Focus({ navigation }) {
         <Text style={styles.subtitle}>
           Select one or more options that match your experience.
         </Text>
+
         <View style={styles.options}>
           {options.map((item) => {
             const isSelected = selectedOptions.includes(item);
             return (
               <Pressable
                 key={item}
-                style={[
-                  styles.option,
-                  isSelected && styles.selectedOption,
-                ]}
+                style={[styles.option, isSelected && styles.selectedOption]}
                 onPress={() => toggleOption(item)}
               >
                 <Text
@@ -62,12 +67,23 @@ export default function Focus({ navigation }) {
             );
           })}
         </View>
-        <Pressable
-          style={styles.button}
-          onPress={handleFinishSetup}
-        >
-          <Text style={styles.buttonText}>Finish setup</Text>
-        </Pressable>
+
+        <View style={styles.actions}>
+          <Pressable
+            style={[
+              styles.button,
+              selectedOptions.length === 0 && styles.buttonDisabled,
+            ]}
+            onPress={handleFinishSetup}
+            disabled={selectedOptions.length === 0}
+          >
+            <Text style={styles.buttonText}>Finish setup</Text>
+          </Pressable>
+
+          <Pressable style={styles.skipBttn} onPress={handleSkip}>
+            <Text style={styles.skipBttnTxt}>Skip for now</Text>
+          </Pressable>
+        </View>
       </View>
     </Screen>
   );
@@ -117,5 +133,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colours.white,
     ...typography.button,
+  },
+  skipBttn: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  skipBttnTxt: {
+    ...typography.bodySmall,
+    color: colours.textMuted,
   },
 });

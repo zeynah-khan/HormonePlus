@@ -26,10 +26,16 @@ export default function Intentions({ navigation }) {
     }
   };
 
-const handleContinue = async () => {
-  await saveGoals(selectedGoals);
-  navigation.navigate('Focus');
-};
+  const handleContinue = async () => {
+    await saveGoals(selectedGoals);
+    navigation.navigate('Focus');
+  };
+
+  const handleSkip = async () => {
+    await saveGoals([], { skipped: true });
+    navigation.navigate('Focus');
+  };
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -69,6 +75,9 @@ const handleContinue = async () => {
           onPress={handleContinue}
         >
           <Text style={styles.buttonText}>Continue</Text>
+        </Pressable>
+        <Pressable style={styles.skipBttn} onPress={handleSkip}>
+          <Text style={styles.skipBttnTxt}>Skip for now!</Text>
         </Pressable>
       </View>
     </Screen>
@@ -126,5 +135,13 @@ const styles = StyleSheet.create({
   buttonText: {
     ...typography.button,
     color: colours.white,
+  },
+  skipBttn: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  skipBttnTxt: {
+    ...typography.bodySmall,
+    color: colours.textMuted,
   },
 });
