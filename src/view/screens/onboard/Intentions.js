@@ -27,7 +27,7 @@ export default function Intentions({ navigation }) {
   };
 
   const handleContinue = async () => {
-    await saveGoals(selectedGoals);
+    await saveGoals(selectedGoals, { skipped: false });
     navigation.navigate('Focus');
   };
 
@@ -70,10 +70,9 @@ export default function Intentions({ navigation }) {
             );
           })}
         </View>
-        <Pressable
-          style={styles.button}
-          onPress={handleContinue}
-        >
+        <Pressable style={[styles.button, selectedGoals.length === 0 && styles.buttonDisabled,]}
+        onPress={handleContinue}
+        disabled={selectedGoals.length === 0}>
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
         <Pressable style={styles.skipBttn} onPress={handleSkip}>
@@ -135,6 +134,9 @@ const styles = StyleSheet.create({
   buttonText: {
     ...typography.button,
     color: colours.white,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   skipBttn: {
     paddingVertical: 12,

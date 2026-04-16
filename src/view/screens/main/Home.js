@@ -201,9 +201,11 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colours.surface,
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: 20,
+    padding: 18,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colours.border,
   },
   cardTitle: {
     ...typography.subtitle,
