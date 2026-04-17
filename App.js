@@ -11,6 +11,7 @@ import Welcome from './src/view/screens/onboard/Welcome';
 import Intentions from './src/view/screens/onboard/Intentions';
 import Focus from './src/view/screens/onboard/Focus';
 
+import EditLog from './src/view/screens/main/EditLog';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,10 @@ export default function App() {
         <Stack.Screen
           name="MainTabs"
           component={MainTabs}
+        />
+        <Stack.Screen
+          name="EditLog"
+          component={EditLog}
         />
       </Stack.Navigator>
     </NavigationContainer>

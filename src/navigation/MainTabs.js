@@ -8,6 +8,7 @@ import Home from '../view/screens/main/Home';
 import SymptomLog from '../view/screens/main/SymptomLog';
 import Profile from '../view/screens/main/Profile';
 import Insights from '../view/screens/main/Insights';
+import CalendarView from '../view/screens/main/CalendarView';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +41,8 @@ export default function MainTabs() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Log') {
             iconName = focused ? 'create' : 'create-outline';
+          } else if (route.name === 'Calendar') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
           } else if (route.name === 'Insights') {
             iconName = focused ? 'analytics' : 'analytics-outline';
           } else if (route.name === 'Profile') {
@@ -53,6 +56,11 @@ export default function MainTabs() {
         name="Home"
         component={Home}
         options={{ title: 'Home' }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarView}
+        options={{ title: 'Calendar' }}
       />
       <Tab.Screen
         name="Log"
