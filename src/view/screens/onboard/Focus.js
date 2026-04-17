@@ -19,17 +19,18 @@ export default function Focus({ navigation }) {
   ];
 
   const toggleOption = (option) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-    }
+    setSelectedOptions((prev) => {
+      if (prev.includes(option)) {
+        return prev.filter((item) => item !== option);
+      }
+      return [...prev, option];
+    });
   };
 
   const handleFinishSetup = async () => {
     await saveFocusAreas(selectedOptions, { skipped: false });
     await setSetupComplete(true);
-    avigation.replace('MainTabs');
+    navigation.replace('MainTabs');
   };
 
   const handleSkip = async () => {
@@ -98,11 +99,13 @@ const styles = StyleSheet.create({
     ...typography.titleMedium,
     color: colours.textPrimary,
     marginBottom: 10,
+    textAlign: 'center',
   },
   subtitle: {
     ...typography.body,
     color: colours.textMuted,
     marginBottom: 20,
+    textAlign: 'center',
   },
   options: {
     marginBottom: 30,
@@ -127,12 +130,13 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colours.primary,
     paddingVertical: 14,
+    paddingHorizontal: 20,
     borderRadius: 12,
-    alignItems: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
-    color: colours.white,
     ...typography.button,
+    color: colours.white,
   },
   skipBttn: {
     paddingVertical: 12,
@@ -141,5 +145,11 @@ const styles = StyleSheet.create({
   skipBttnTxt: {
     ...typography.bodySmall,
     color: colours.textMuted,
+  },
+  actions: {
+    marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
 });

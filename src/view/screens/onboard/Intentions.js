@@ -92,16 +92,19 @@ const styles = StyleSheet.create({
     ...typography.titleLarge,
     color: colours.textPrimary,
     marginBottom: 12,
+    textAlign: 'center',
   },
   subtitle: {
     ...typography.subtitle,
     color: colours.textSecondary,
     marginBottom: 16,
+    textAlign: 'center',
   },
   body: {
     ...typography.bodySmall,
     color: colours.textSoft,
     marginBottom: 24,
+    textAlign: 'center',
   },
   optionsContainer: {
     marginBottom: 28,
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   buttonText: {
     ...typography.button,
