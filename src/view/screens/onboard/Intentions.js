@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Text, Pressable, StyleSheet, View } from 'react-native';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import { saveGoals } from '../../../model/storage';
+import React, { useState } from "react";
+import { Text, Pressable, StyleSheet, View } from "react-native";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { saveGoals } from "../../../model/storage";
 
 export default function Intentions({ navigation }) {
   const [selectedGoals, setSelectedGoals] = useState([]);
@@ -10,12 +10,12 @@ export default function Intentions({ navigation }) {
   // users can select their intentions for using the app
   // this will also later affect the app logic
   const goals = [
-    'Track symptoms',
-    'Understand patterns',
-    'Learn more about hormonal health',
-    'Prepare for medical appointments',
-    'Feel more in control',
-    'Not sure',
+    "Track symptoms",
+    "Understand patterns",
+    "Learn more about hormonal health",
+    "Prepare for medical appointments",
+    "Feel more in control",
+    "Not sure",
   ];
 
   const toggleGoal = (goal) => {
@@ -28,12 +28,12 @@ export default function Intentions({ navigation }) {
 
   const handleContinue = async () => {
     await saveGoals(selectedGoals, { skipped: false });
-    navigation.navigate('Focus');
+    navigation.navigate("Focus");
   };
 
   const handleSkip = async () => {
     await saveGoals([], { skipped: true });
-    navigation.navigate('Focus');
+    navigation.navigate("Focus");
   };
 
   return (
@@ -70,9 +70,14 @@ export default function Intentions({ navigation }) {
             );
           })}
         </View>
-        <Pressable style={[styles.button, selectedGoals.length === 0 && styles.buttonDisabled,]}
-        onPress={handleContinue}
-        disabled={selectedGoals.length === 0}>
+        <Pressable
+          style={[
+            styles.button,
+            selectedGoals.length === 0 && styles.buttonDisabled,
+          ]}
+          onPress={handleContinue}
+          disabled={selectedGoals.length === 0}
+        >
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
         <Pressable style={styles.skipBttn} onPress={handleSkip}>
@@ -86,25 +91,25 @@ export default function Intentions({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     ...typography.titleLarge,
     color: colours.textPrimary,
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     ...typography.subtitle,
     color: colours.textSecondary,
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   body: {
     ...typography.bodySmall,
     color: colours.textSoft,
     marginBottom: 24,
-    textAlign: 'center',
+    textAlign: "center",
   },
   optionsContainer: {
     marginBottom: 28,
@@ -117,7 +122,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedOptionButton: {
-    backgroundColor: colours.primary + '33',
+    backgroundColor: colours.primary + "33",
   },
   optionText: {
     ...typography.body,
@@ -125,14 +130,14 @@ const styles = StyleSheet.create({
   },
   selectedOptionText: {
     color: colours.textPrimary,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   button: {
     backgroundColor: colours.primary,
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   buttonText: {
     ...typography.button,
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
   },
   skipBttn: {
     paddingVertical: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   skipBttnTxt: {
     ...typography.bodySmall,

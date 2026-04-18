@@ -1,10 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const KEYS = {
-  GOALS: 'userGoals',
-  FOCUS: 'userFocusAreas',
-  LOGS: 'symptomLogs',
-  ONBOARDING: 'onboardingStatus',
+  GOALS: "userGoals",
+  FOCUS: "userFocusAreas",
+  LOGS: "symptomLogs",
+  ONBOARDING: "onboardingStatus",
 };
 
 const defaultOnboarding = {

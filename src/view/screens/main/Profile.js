@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from 'react';
-import { Text, StyleSheet, View, ScrollView, Pressable, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import {
-  getGoals,
-  getFocusAreas,
-  getOnboardingStatus,
-  clearAllData,
-} from '../../../model/storage';
+import React, { useCallback, useState } from "react";
+import { Text, StyleSheet, View, ScrollView, Pressable, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { getGoals, getFocusAreas, getOnboardingStatus, clearAllData } from "../../../model/storage";
 
 export default function Profile() {
   const [goals, setGoals] = useState([]);
@@ -28,7 +23,7 @@ export default function Profile() {
           setFocusAreas(storedFocusAreas);
           setOnboarding(onboardingStatus);
         } catch (error) {
-          console.error('Error loading profile data:', error);
+          console.error("Error loading profile data:", error);
         }
       };
 
@@ -38,26 +33,26 @@ export default function Profile() {
 
   const handleClearData = () => {
     Alert.alert(
-      'Clear all data?',
-      'This will remove your symptom logs, goals, focus areas, and onboarding progress.',
+      "Clear all data?",
+      "This will remove your symptom logs, goals, focus areas, and onboarding progress.",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Clear all',
-          style: 'destructive',
+          text: "Clear all",
+          style: "destructive",
           onPress: async () => {
             await clearAllData();
             setGoals([]);
             setFocusAreas([]);
             setOnboarding(null);
-            Alert.alert('Done', 'Your local app data has been cleared.');
+            Alert.alert("Done", "Your local app data has been cleared.");
           },
         },
       ]
     );
   };
 
-  const displayName = 'User';
+  const displayName = "User";
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
@@ -82,7 +77,11 @@ export default function Profile() {
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Ionicons name="person-outline" size={20} color={colours.textPrimary} />
+              <Ionicons
+                name="person-outline"
+                size={20}
+                color={colours.textPrimary}
+              />
               <Text style={styles.rowLabel}>Name</Text>
             </View>
             <Text style={styles.rowValue}>{displayName}</Text>
@@ -92,11 +91,15 @@ export default function Profile() {
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Ionicons name="flag-outline" size={20} color={colours.textPrimary} />
+              <Ionicons
+                name="flag-outline"
+                size={20}
+                color={colours.textPrimary}
+              />
               <Text style={styles.rowLabel}>Goals</Text>
             </View>
             <Text style={styles.rowValue}>
-              {goals.length > 0 ? `${goals.length} selected` : 'None yet'}
+              {goals.length > 0 ? `${goals.length} selected` : "None yet"}
             </Text>
           </View>
 
@@ -104,11 +107,17 @@ export default function Profile() {
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Ionicons name="heart-outline" size={20} color={colours.textPrimary} />
+              <Ionicons
+                name="heart-outline"
+                size={20}
+                color={colours.textPrimary}
+              />
               <Text style={styles.rowLabel}>Focus areas</Text>
             </View>
             <Text style={styles.rowValue}>
-              {focusAreas.length > 0 ? `${focusAreas.length} selected` : 'None yet'}
+              {focusAreas.length > 0
+                ? `${focusAreas.length} selected`
+                : "None yet"}
             </Text>
           </View>
         </View>
@@ -117,11 +126,15 @@ export default function Profile() {
           <Text style={styles.sectionHeading}>Tracking</Text>
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Ionicons name="checkmark-circle-outline" size={20} color={colours.textPrimary} />
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={20}
+                color={colours.textPrimary}
+              />
               <Text style={styles.rowLabel}>Setup complete</Text>
             </View>
             <Text style={styles.rowValue}>
-              {onboarding?.setupComplete ? 'Yes' : 'No'}
+              {onboarding?.setupComplete ? "Yes" : "No"}
             </Text>
           </View>
         </View>
@@ -129,9 +142,10 @@ export default function Profile() {
         <View style={styles.sectionCard}>
           <Text style={styles.sectionHeading}>About this app</Text>
           <Text style={styles.aboutText}>
-            This app is designed to support users whose experiences are often overlooked by
-            fertility-first cycle trackers, including those navigating PCOS, PMDD, perimenopause,
-            menopause, and irregular cycles.
+            This app is designed to support users whose experiences are often
+            overlooked by fertility-first cycle trackers, including those
+            navigating PCOS, PMDD, perimenopause, menopause, and irregular
+            cycles.
           </Text>
         </View>
 
@@ -153,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 24,
     marginBottom: 18,
-    alignItems: 'center',
+    alignItems: "center",
   },
   avatar: {
     width: 84,
@@ -161,14 +175,14 @@ const styles = StyleSheet.create({
     borderRadius: 42,
     borderWidth: 3,
     borderColor: colours.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 18,
   },
   avatarText: {
     color: colours.white,
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   greeting: {
     ...typography.titleMedium,
@@ -178,7 +192,7 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     ...typography.body,
     color: colours.white,
-    textAlign: 'center',
+    textAlign: "center",
     opacity: 0.95,
   },
   infoCard: {
@@ -188,7 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     borderWidth: 1,
     borderColor: colours.border,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 14,
   },
   infoIconWrap: {
@@ -219,17 +233,17 @@ const styles = StyleSheet.create({
     ...typography.subtitle,
     color: colours.textPrimary,
     marginBottom: 14,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     minHeight: 48,
   },
   rowLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     flex: 1,
   },
@@ -256,9 +270,9 @@ const styles = StyleSheet.create({
     backgroundColor: colours.primary,
     borderRadius: 18,
     paddingVertical: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     gap: 8,
     marginTop: 4,
   },

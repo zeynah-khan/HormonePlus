@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Text, Pressable, StyleSheet, View } from 'react-native';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import { saveFocusAreas, setSetupComplete } from '../../../model/storage';
+import React, { useState } from "react";
+import { Text, Pressable, StyleSheet, View } from "react-native";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { saveFocusAreas, setSetupComplete } from "../../../model/storage";
 
 export default function Focus({ navigation }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -10,12 +10,12 @@ export default function Focus({ navigation }) {
   // user can choose what they're experiencing
   // this should later affect the app logic
   const options = [
-    'PCOS',
-    'Menopause',
-    'PMDD',
-    'Perimenopause',
-    'Irregular cycles',
-    'Not sure',
+    "PCOS",
+    "Menopause",
+    "PMDD",
+    "Perimenopause",
+    "Irregular cycles",
+    "Not sure",
   ];
 
   const toggleOption = (option) => {
@@ -30,13 +30,13 @@ export default function Focus({ navigation }) {
   const handleFinishSetup = async () => {
     await saveFocusAreas(selectedOptions, { skipped: false });
     await setSetupComplete(true);
-    navigation.replace('MainTabs');
+    navigation.replace("MainTabs");
   };
 
   const handleSkip = async () => {
     await saveFocusAreas([], { skipped: true });
     await setSetupComplete(true);
-    navigation.replace('MainTabs');
+    navigation.replace("MainTabs");
   };
 
   return (
@@ -93,19 +93,19 @@ export default function Focus({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     ...typography.titleMedium,
     color: colours.textPrimary,
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     ...typography.body,
     color: colours.textMuted,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   options: {
     marginBottom: 30,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedOption: {
-    backgroundColor: colours.primary + '33',
+    backgroundColor: colours.primary + "33",
   },
   optionText: {
     ...typography.body,
@@ -125,14 +125,14 @@ const styles = StyleSheet.create({
   },
   selectedOptionText: {
     color: colours.textPrimary,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   button: {
     backgroundColor: colours.primary,
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   buttonText: {
     ...typography.button,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   skipBttn: {
     paddingVertical: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   skipBttnTxt: {
     ...typography.bodySmall,

@@ -1,17 +1,17 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { Text, StyleSheet, View, ScrollView, Pressable, Alert } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Calendar } from 'react-native-calendars';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import { getSymptomLogs, deleteSymptomLog } from '../../../model/storage';
+import React, { useCallback, useMemo, useState } from "react";
+import { Text, StyleSheet, View, ScrollView, Pressable, Alert } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { Calendar } from "react-native-calendars";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { getSymptomLogs, deleteSymptomLog } from "../../../model/storage";
 
 function formatSelectionSummary(log) {
   if (!log?.selections) return [];
 
   return Object.entries(log.selections)
     .filter(([, values]) => values.length > 0)
-    .map(([category, values]) => `${category}: ${values.join(', ')}`);
+    .map(([category, values]) => `${category}: ${values.join(", ")}`);
 }
 
 export default function CalendarScreen() {
@@ -28,7 +28,7 @@ export default function CalendarScreen() {
         setSelectedDate(storedLogs[0].date);
       }
     } catch (error) {
-      console.error('Error loading logs for calendar:', error);
+      console.error("Error loading logs for calendar:", error);
     }
   }, [selectedDate]);
 
@@ -73,28 +73,24 @@ export default function CalendarScreen() {
   const handleDelete = () => {
     if (!selectedLog) return;
 
-    Alert.alert(
-      'Delete entry',
-      'This log will be permanently removed.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            await deleteSymptomLog(selectedLog.id);
-            const updatedLogs = await getSymptomLogs();
-            setLogs(updatedLogs);
+    Alert.alert("Delete entry", "This log will be permanently removed.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          await deleteSymptomLog(selectedLog.id);
+          const updatedLogs = await getSymptomLogs();
+          setLogs(updatedLogs);
 
-            if (updatedLogs.length > 0) {
-              setSelectedDate(updatedLogs[0].date);
-            } else {
-              setSelectedDate(null);
-            }
-          },
+          if (updatedLogs.length > 0) {
+            setSelectedDate(updatedLogs[0].date);
+          } else {
+            setSelectedDate(null);
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -123,7 +119,7 @@ export default function CalendarScreen() {
               textDayFontSize: 15,
               textMonthFontSize: 18,
               textDayHeaderFontSize: 13,
-              textMonthFontWeight: '700',
+              textMonthFontWeight: "700",
             }}
             style={styles.calendar}
           />
@@ -152,16 +148,14 @@ export default function CalendarScreen() {
               ))}
 
               {!!selectedLog.notes && (
-                <Text style={styles.notesText}>
-                  Notes: {selectedLog.notes}
-                </Text>
+                <Text style={styles.notesText}>Notes: {selectedLog.notes}</Text>
               )}
 
               <View style={styles.actionsRow}>
                 <Pressable
                   style={styles.primaryButton}
                   onPress={() =>
-                    navigation.navigate('EditLog', { logId: selectedLog.id })
+                    navigation.navigate("EditLog", { logId: selectedLog.id })
                   }
                 >
                   <Text style={styles.primaryButtonText}>Edit entry</Text>
@@ -203,7 +197,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     borderRadius: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   card: {
     backgroundColor: colours.surface,
@@ -227,7 +221,7 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colours.textSoft,
     marginBottom: 8,
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
   notesText: {
     ...typography.bodySmall,
@@ -236,7 +230,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   actionsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
     marginTop: 8,
   },
@@ -245,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: colours.primary,
     paddingVertical: 13,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   primaryButtonText: {
     ...typography.button,
@@ -256,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: colours.surface,
     paddingVertical: 13,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 1,
     borderColor: colours.border,
   },

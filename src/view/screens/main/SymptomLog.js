@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, View, Pressable, ScrollView, Alert, TextInput } from 'react-native';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import { addSymptomLog } from '../../../model/storage';
+import React, { useState } from "react";
+import { Text, StyleSheet, View, Pressable, ScrollView, Alert, TextInput } from "react-native";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { addSymptomLog } from "../../../model/storage";
 // removed the constants into a separate file for easeeee
-import { symptomSections, emptySelections } from '../../../model/symptoms';
+import { symptomSections, emptySelections } from "../../../model/symptoms";
 
 export default function SymptomLog({ navigation }) {
   const [selectedItems, setItems] = useState(emptySelections);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState("");
 
   const toggleItem = (sectionKey, label) => {
     setItems((prev) => {
@@ -33,13 +33,16 @@ export default function SymptomLog({ navigation }) {
         notes.trim().length > 0;
 
       if (!hasSelections) {
-        Alert.alert('Nothing added', 'Please choose a symptom or write a short note before saving.');
+        Alert.alert(
+          "Nothing added",
+          "Please choose a symptom or write a short note before saving."
+        );
         return;
       }
 
       const symptomLog = {
         id: now.toISOString(),
-        date: now.toISOString().split('T')[0],
+        date: now.toISOString().split("T")[0],
         createdAt: now.toISOString(),
         selections: selectedItems,
         notes: notes.trim(),
@@ -47,11 +50,14 @@ export default function SymptomLog({ navigation }) {
 
       await addSymptomLog(symptomLog);
 
-      Alert.alert('Saved', 'Your symptom log has been saved.');
-      navigation.navigate('Calendar');
+      Alert.alert("Saved", "Your symptom log has been saved.");
+      navigation.navigate("Calendar");
     } catch (error) {
-      console.error('Error saving symptom log:', error);
-      Alert.alert('Error', 'Something went wrong while saving your symptom log.');
+      console.error("Error saving symptom log:", error);
+      Alert.alert(
+        "Error",
+        "Something went wrong while saving your symptom log."
+      );
     }
   };
 
@@ -75,38 +81,49 @@ export default function SymptomLog({ navigation }) {
                   <Text style={styles.groupLabel}>{group.label}</Text>
                   <View style={styles.chipContainer}>
                     {group.items.map((item) => {
-                      const isSelected = selectedItems[group.key].includes(item);
-                      
+                      const isSelected =
+                        selectedItems[group.key].includes(item);
+
                       return (
-                      <Pressable key={item} style={[styles.chip, isSelected && styles.chipSelected]}
-                      onPress={() => toggleItem(group.key, item)}
-                      >
-                        <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>
-                          {item}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
+                        <Pressable
+                          key={item}
+                          style={[
+                            styles.chip,
+                            isSelected && styles.chipSelected,
+                          ]}
+                          onPress={() => toggleItem(group.key, item)}
+                        >
+                          <Text
+                            style={[
+                              styles.chipText,
+                              isSelected && styles.chipTextSelected,
+                            ]}
+                          >
+                            {item}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
                 </View>
-              </View>
-            ))}
+              ))}
+            </View>
+          ))}
+          <View style={styles.sectionCard}>
+            <Text style={styles.sectionTitle}>Notes</Text>
+            <TextInput
+              value={notes}
+              onChangeText={setNotes}
+              placeholder="Add anything else you’d like to remember today..."
+              placeholderTextColor={colours.inactive}
+              multiline
+              style={styles.notesInput}
+            />
           </View>
-        ))}
-        <View style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>Notes</Text>
-          <TextInput
-            value={notes}
-            onChangeText={setNotes}
-            placeholder="Add anything else you’d like to remember today..."
-            placeholderTextColor={colours.inactive}
-            multiline
-            style={styles.notesInput}
-          />
-        </View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <Pressable style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
+        </ScrollView>
+        <View style={styles.footer}>
+          <Pressable style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Save</Text>
           </Pressable>
         </View>
       </View>
@@ -145,8 +162,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   chipContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: 8,
   },
   chip: {
@@ -158,18 +175,18 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   chipSelected: {
-    backgroundColor: colours.primary + '22',
+    backgroundColor: colours.primary + "22",
     borderColor: colours.primary,
   },
   chipText: {
     ...typography.bodySmall,
     fontSize: 13,
     color: colours.textSecondary,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   chipTextSelected: {
     color: colours.textPrimary,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   notesInput: {
     minHeight: 110,
@@ -178,7 +195,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colours.border,
     padding: 14,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     color: colours.textPrimary,
     ...typography.bodySmall,
   },
@@ -186,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: colours.primary,
     borderRadius: 16,
     paddingVertical: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   saveButtonText: {
     ...typography.button,
@@ -204,6 +221,6 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colours.textMuted,
     marginBottom: 10,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
