@@ -77,3 +77,4 @@ export const learnCards = [
       'Patterns are often easier to notice after several entries rather than one isolated day.',
   },
 ];
+// final commit :)

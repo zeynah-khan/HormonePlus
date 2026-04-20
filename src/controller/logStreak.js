@@ -39,3 +39,4 @@ export function getCurrentStreak(logs) {
 
   return streak;
 }
+// final commit :)
