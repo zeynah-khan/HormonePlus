@@ -12,7 +12,7 @@ export default function Welcome({ navigation }) {
           A hormonal health space designed for reflection, understanding, and
           support beyond fertility-focused tracking!
         </Text>
-        <Text style={styles.body}>TBC...</Text>
+        <Text style={styles.body}>Take a look around!</Text>
         <Pressable
           style={styles.button}
           onPress={() => navigation.navigate("Intentions")}
