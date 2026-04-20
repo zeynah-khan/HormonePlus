@@ -1,8 +1,12 @@
-import { addDoc, collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { addDoc, collection, getDocs, query, where, setDoc, doc } from "firebase/firestore";
+import { db } from "../config/firebase";
+
+export async function saveUserProfileToCloud(userId, profileData) {
+  await setDoc(doc(db, "users", userId), profileData, { merge: true });
+}
 
 export async function saveSymptomLogToCloud(log, userId) {
-  await addDoc(collection(db, 'symptomLogs'), {
+  await addDoc(collection(db, "symptomLogs"), {
     ...log,
     userId,
     createdAt: new Date().toISOString(),
@@ -10,15 +14,12 @@ export async function saveSymptomLogToCloud(log, userId) {
 }
 
 export async function getUserSymptomLogs(userId) {
-  const q = query(
-    collection(db, 'symptomLogs'),
-    where('userId', '==', userId)
-  );
+  const q = query(collection(db, "symptomLogs"), where("userId", "==", userId));
 
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
+  return snapshot.docs.map((docItem) => ({
+    id: docItem.id,
+    ...docItem.data(),
   }));
 }

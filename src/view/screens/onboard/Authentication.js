@@ -1,62 +1,106 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
-import Screen from '../../layouts/Screen';
-import { colours, typography } from '../../layouts/Theme';
-import { signInUser, signUpUser } from '../../../controller/authentication';
+import React, { useState } from "react";
+import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import Screen from "../../layouts/Screen";
+import { colours, typography } from "../../layouts/Theme";
+import { signInUser, signUpUser } from "../../../controller/authentication";
+import { saveUserProfileToCloud } from "../../../controller/firestore";
+import { getGoals, getFocusAreas } from "../../../model/storage";
 
-export default function AuthScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function AuthScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing details", "Please enter an email and password.");
+      return;
+    }
+
     try {
+      setIsLoading(true);
+
       const user = await signUpUser(email.trim(), password);
-      console.log('SIGNED UP USER:', user);
-      Alert.alert('Success', 'Account created successfully.');
+
+      const goals = await getGoals();
+      const focusAreas = await getFocusAreas();
+
+      await saveUserProfileToCloud(user.uid, {
+        email: user.email,
+        goals,
+        focusAreas,
+        createdAt: new Date().toISOString(),
+      });
+
+      Alert.alert("Success", `Account created for ${user.email}`);
     } catch (error) {
-      console.log('SIGN UP ERROR CODE:', error.code);
-      console.log('SIGN UP ERROR MESSAGE:', error.message);
-      Alert.alert('Sign up failed', `${error.code}\n${error.message}`);
+      Alert.alert("Sign up failed", `${error.code}\n${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignIn = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing details", "Please enter an email and password.");
+      return;
+    }
+
     try {
-      await signInUser(email.trim(), password);
-      Alert.alert('Success', 'Signed in successfully.');
+      setIsLoading(true);
+      const user = await signInUser(email.trim(), password);
+      Alert.alert("Success", `Signed in as ${user.email}`);
     } catch (error) {
-      Alert.alert('Sign in failed', error.message);
+      Alert.alert("Sign in failed", `${error.code}\n${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Screen>
       <View style={styles.container}>
-        <Text style={styles.title}>Sign in</Text>
-        <Text style={styles.subtitle}>Use an account to save your data securely.</Text>
+        <Text style={styles.title}>Sign in / Up</Text>
+        <Text style={styles.subtitle}>
+          Sign in or create an account to save your data more securely.
+        </Text>
 
         <TextInput
           style={styles.input}
           placeholder="Email"
           autoCapitalize="none"
+          autoCorrect={false}
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
+          editable={!isLoading}
         />
 
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
+          autoCorrect={false}
           value={password}
           onChangeText={setPassword}
+          editable={!isLoading}
         />
 
-        <Pressable style={styles.button} onPress={handleSignIn}>
-          <Text style={styles.buttonText}>Sign in</Text>
+        <Pressable
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={handleSignIn}
+          disabled={isLoading}
+        >
+          <Text style={styles.buttonText}>
+            {isLoading ? "Please wait..." : "Sign in"}
+          </Text>
         </Pressable>
 
-        <Pressable style={styles.secondaryButton} onPress={handleSignUp}>
+        <Pressable
+          style={styles.secondaryButton}
+          onPress={handleSignUp}
+          disabled={isLoading}
+        >
           <Text style={styles.secondaryButtonText}>Create account</Text>
         </Pressable>
       </View>
@@ -67,19 +111,19 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     ...typography.titleMedium,
     color: colours.textPrimary,
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     ...typography.body,
     color: colours.textMuted,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     backgroundColor: colours.surface,
@@ -88,13 +132,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
     marginBottom: 12,
+    color: colours.textPrimary,
   },
   button: {
     backgroundColor: colours.primary,
     borderRadius: 12,
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: {
     ...typography.button,
@@ -102,7 +150,7 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
   },
   secondaryButtonText: {
     ...typography.bodySmall,

@@ -5,6 +5,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import Screen from "../../layouts/Screen";
 import { colours, typography } from "../../layouts/Theme";
 import { getGoals, getFocusAreas, getOnboardingStatus, clearAllData } from "../../../model/storage";
+import { auth } from "../../../config/firebase";
+import { signOutUser } from "../../../controller/authentication";
 
 export default function Profile() {
   const [goals, setGoals] = useState([]);
@@ -52,8 +54,17 @@ export default function Profile() {
     );
   };
 
-  const displayName = "User";
-  const initial = displayName.charAt(0).toUpperCase();
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      Alert.alert("Signed out", "You have been signed out.");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  const currentUser = auth.currentUser;
+  const initial = currentUser?.email?.charAt(0)?.toUpperCase() || "U";
 
   return (
     <Screen>
@@ -82,10 +93,16 @@ export default function Profile() {
                 size={20}
                 color={colours.textPrimary}
               />
-              <Text style={styles.rowLabel}>Name</Text>
+              <Text style={styles.rowLabel}>Account</Text>
             </View>
-            <Text style={styles.rowValue}>{displayName}</Text>
+            <Text style={styles.rowValue}>
+              {currentUser?.email || "No user"}
+            </Text>
           </View>
+
+          <Pressable style={styles.signOutButton} onPress={handleSignOut}>
+            <Text style={styles.signOutButtonText}>Sign out</Text>
+          </Pressable>
 
           <View style={styles.divider} />
 
@@ -280,5 +297,16 @@ const styles = StyleSheet.create({
     ...typography.button,
     color: colours.white,
     fontSize: 16,
+  },
+  signOutButton: {
+    backgroundColor: colours.primary,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 12,
+  },
+  signOutButtonText: {
+    ...typography.button,
+    color: colours.white,
   },
 });

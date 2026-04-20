@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, Pressable, ScrollView, Alert, TextInput } from "react-native";
+import { View, Text, Pressable, StyleSheet, Alert, TextInput, ScrollView } from "react-native";
 import Screen from "../../layouts/Screen";
 import { colours, typography } from "../../layouts/Theme";
+import { auth } from "../../../config/firebase";
 import { addSymptomLog } from "../../../model/storage";
+import { saveSymptomLogToCloud } from "../../../controller/firestore";
 // removed the constants into a separate file for easeeee
 import { symptomSections, emptySelections } from "../../../model/symptoms";
 
@@ -49,6 +51,10 @@ export default function SymptomLog({ navigation }) {
       };
 
       await addSymptomLog(symptomLog);
+
+      if (auth.currentUser) {
+        await saveSymptomLogToCloud(symptomLog, auth.currentUser.uid);
+      }
 
       Alert.alert("Saved", "Your symptom log has been saved.");
       navigation.navigate("Calendar");

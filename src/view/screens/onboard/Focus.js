@@ -30,13 +30,13 @@ export default function Focus({ navigation }) {
   const handleFinishSetup = async () => {
     await saveFocusAreas(selectedOptions, { skipped: false });
     await setSetupComplete(true);
-    navigation.replace("MainTabs");
+    navigation.replace("Authentication");
   };
 
   const handleSkip = async () => {
     await saveFocusAreas([], { skipped: true });
     await setSetupComplete(true);
-    navigation.replace("MainTabs");
+    navigation.replace("Authentication");
   };
 
   return (
